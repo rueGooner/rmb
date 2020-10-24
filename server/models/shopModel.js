@@ -8,11 +8,21 @@ const shopSchema = new mongoose.Schema({
     default: '',
     required: [true, 'Shop must have a name'],
   },
-  teamImage: {
+  location: {
     type: String,
-    default: '',
+    trim: true,
   },
-  members: [
+  telephoneNumber: {
+    type: String,
+  },
+  appointmentOnly: {
+    type: Boolean,
+    default: false,
+  },
+  ratings: {
+    type: Number,
+  },
+  barbers: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Barber',
