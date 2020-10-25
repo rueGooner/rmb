@@ -4,6 +4,6 @@ const barberController = require('../../controllers/barberController');
 
 const router = express.Router();
 
-router.route('/fake').post(barberController.addFakeBarbers);
+router.route('/create').post(barberController.createBarber);
 
 module.exports = router;

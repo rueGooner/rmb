@@ -1,32 +1,23 @@
+const { Model } = require('mongoose');
 const Models = require('../models/index');
-const faker = require('faker');
 
-/**
- * Function to add fake barbers into the DB.
- *
- * @param {*} request
- * @param {*} response
- */
-const addFakeBarbers = async (request, response) => {
+const createBarber = async ({ body: { name, shopID }}, response) => {
   try {
-    let barbers = [];
-    for (let index = 0; index < 1; index++) {
-      barbers.push({
-        name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-      });
-    }
-
-    const fakeBarbers = await Models.Barber.create(barbers);
-    // response.status(201).json({
-    //   message: 'Fake Barbers Created',
-    //   fakeBarbers,
-    // });
+    const newBarber = await Models.Barber.create({ name: name });
+    const barberID = newBarber._id;
+    const shop = await Models.Shop.findByIdAndUpdate(shopID,
+      { $push: { barbers: barberID } },
+      { new: true }
+    );
+    response.send({
+      message: `New barber added to ${shop.name}`,
+      shop,
+    })
   } catch (error) {
-    console.log(error);
+    response.send(error.message);
   }
-};
+}
 
 module.exports = {
-  addFakeBarbers,
   createBarber
 };
