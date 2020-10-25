@@ -41,9 +41,13 @@ const addFakeShops = async (request, response) => {
 };
 
 /**
+ * Fetches a single barber shop by it's ID and returns the document including the current barbers.
  *
+ * @function
  * @param {Object} request The HTTP Request Object.
- * @param {*} response
+ * @param {String} request.params.id - The Shop ID parameter.
+ * @param {Object} response The HTTP Response Object.
+ * @returns {Object} - Returns the shop and it's barbers.
  */
 const fetchBarberShop = async (request, response) => {
   try {
