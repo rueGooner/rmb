@@ -62,7 +62,45 @@ const fetchBarberShop = async (request, response) => {
   }
 }
 
+/**
+ * Fetches a list of barbershops, with a configurable limit,
+ * can be filtered by shop name.
+ *
+ * @function
+ * @param {Object} request The HTTP Request Object.
+ * @param {Object} response The HTTP Response Object.
+ * @returns {Array} - Returns the list of barbershops.
+ */
+const fetchShops = async (request, response) => {
+  try {
+    const { page, limit, search } = request.query;
+    let query = {};
+
+    if (search) {
+      const reg = new RegExp('.*' + search + '.*', 'i');
+      query = { name: reg };
+    }
+
+    const skip = (page - 1) * limit || 0;
+
+    const shopCount = await Models.Shop.find(query).countDocuments();
+    const shops = await Models.Shop.find(query)
+      .skip(parseInt(skip, 10))
+      .limit(parseInt(15, 10));
+
+      console.log(shopCount);
+
+    response.status(200).json({
+      pages: Math.round(shopCount / 15) > 1 ? Math.round(shopCount / 15) : 1,
+      shops,
+    });
+  } catch (error) {
+    response.status(404).send(error.message);
+  }
+}
+
 module.exports = {
   addFakeShops,
-  fetchBarberShop
+  fetchBarberShop,
+  fetchShops,
 };
