@@ -28,4 +28,5 @@ const addFakeBarbers = async (request, response) => {
 
 module.exports = {
   addFakeBarbers,
+  createBarber
 };
