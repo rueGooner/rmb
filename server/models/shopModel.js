@@ -28,6 +28,14 @@ const shopSchema = new mongoose.Schema({
       ref: 'Barber',
     },
   ],
+  established: {
+    type: Date,
+    default: Date.now(),
+  },
+  modifiedAt: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 const Shop = mongoose.model('Shop', shopSchema, 'Shops');

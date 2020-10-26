@@ -1,5 +1,6 @@
 const Models = require('../models/index');
 const faker = require('faker/locale/en_GB');
+const { Model } = require('mongoose');
 
 const createFakeBarbers = async (number) => {
   let barbers = [];
@@ -106,6 +107,56 @@ const fetchShops = async (request, response) => {
  * @returns {String} - Message upon successful deletion of shop.
  * @throws {String} - Message if error cannot be deleted.
  */
+const createNewShop = async (request, response) => {
+  try {
+    const { name, location, telephoneNumber, appointmentOnly, barbers } = request.body;
+
+    const newShopDetails = {
+      name: name,
+      location: location,
+      telephoneNumber: telephoneNumber,
+      appointmentOnly: appointmentOnly,
+      barbers: await addShopsBarbers(barbers)
+    }
+
+    const newShop = await Models.Shop.create(newShopDetails);
+
+    response.status(201).send({
+      message: 'New Shop Created',
+      newShop,
+    });
+
+  } catch (error) {
+    console.log('???', error.message);
+    response.send(error);
+  }
+}
+
+/**
+ * Takes the form data and creates new barbers in the DB.
+ * Returns an array of Barber IDs to be added to the new shop.
+ *
+ * @function
+ * @param {Array} barberArray - Array of Barbers in new shop.
+ * @returns {Array} - An array of Barber IDs.
+ */
+const addShopsBarbers = async (barberArray) => {
+  try {
+    const shopBarbers = await Models.Barber.create(barberArray);
+    return shopBarbers.map(a => a._id);
+  } catch (error) {
+    throw new Error('Cannot add these barbers to the shop at this time');
+  }
+}
+
+/**
+ * Find and remove a barberhop by it's ID.
+ *
+ * @param {String} params.id - The Barbershop ID string parameter
+ * @param {*} response - Http Response Object
+ * @returns {String} - Message upon successful deletion of shop.
+ * @throws {String} - Message if error cannot be deleted.
+ */
 const deleteShop = async ({ params: { id }}, response) => {
   try {
     await Models.Shop.findByIdAndDelete(id);
@@ -124,4 +175,5 @@ module.exports = {
   fetchBarberShop,
   fetchShops,
   deleteShop,
+  createNewShop,
 };
