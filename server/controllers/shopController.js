@@ -1,6 +1,5 @@
 const Models = require('../models/index');
 const faker = require('faker/locale/en_GB');
-const { Model } = require('mongoose');
 
 const createFakeBarbers = async (number) => {
   let barbers = [];
@@ -90,7 +89,7 @@ const fetchShops = async (request, response) => {
 
       console.log(shopCount);
 
-    response.status(200).json({
+    response.status(200).send({
       pages: Math.round(shopCount / 15) > 1 ? Math.round(shopCount / 15) : 1,
       shops,
     });
@@ -100,9 +99,11 @@ const fetchShops = async (request, response) => {
 }
 
 /**
- * Find and remove a barberhop by it's ID.
+ * Takes the submitted data and creates a new shop, either with
+ * barbers or without utilising
  *
- * @param {String} params.id - The Barbershop ID string parameter
+ * @function
+ * @param {String} request.body.name - The new shop name
  * @param {*} response - Http Response Object
  * @returns {String} - Message upon successful deletion of shop.
  * @throws {String} - Message if error cannot be deleted.
@@ -127,7 +128,6 @@ const createNewShop = async (request, response) => {
     });
 
   } catch (error) {
-    console.log('???', error.message);
     response.send(error);
   }
 }
@@ -143,9 +143,10 @@ const createNewShop = async (request, response) => {
 const addShopsBarbers = async (barberArray) => {
   try {
     const shopBarbers = await Models.Barber.create(barberArray);
+    console.log(typeof shopBarbers);
     return shopBarbers.map(a => a._id);
   } catch (error) {
-    throw new Error('Cannot add these barbers to the shop at this time');
+    throw new Error(error);
   }
 }
 
