@@ -6,6 +6,7 @@ const app = express();
 
 const shopRouter = require('./server/routes/api/shopRoutes');
 const barberRouter = require('./server/routes/api/barberRoutes');
+const userRouter = require('./server/routes/api/userRoutes');
 
 app.use(cors());
 
@@ -20,5 +21,6 @@ app.get("/", (req, res) => {
 
 app.use('/api/shops', shopRouter);
 app.use('/api/barbers', barberRouter);
+app.use('/api/users', userRouter);
 
 module.exports = app;
