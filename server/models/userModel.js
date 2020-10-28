@@ -10,7 +10,17 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true,
     required: true,
+  },
+  role: {
+    type: String,
+    enum: ['Barber', 'User'],
+    default: 'User',
+  },
+  shop: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Shop',
   },
   password: {
     type: String,
@@ -18,7 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now()
   }
 });
 

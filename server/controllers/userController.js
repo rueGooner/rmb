@@ -17,7 +17,7 @@ const { createUserToken } = require('../utils/auth');
  * @param {String} request.body.password The Users password.
  * @returns {String} Returns message on success.
  */
-const register = async ({ body: { username, email, password } }, response) => {
+const register = async ({ body: { username, email, password, role } }, response) => {
   try {
     let user = await Models.User.findOne({ email });
     if (user) response.status(400).json({ message: "User Already Exists" });
@@ -28,6 +28,7 @@ const register = async ({ body: { username, email, password } }, response) => {
     user = new Models.User({
       username,
       email,
+      role,
       password: hashedPassword
     });
 

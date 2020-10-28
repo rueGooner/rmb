@@ -143,7 +143,6 @@ const createNewShop = async (request, response) => {
 const addShopsBarbers = async (barberArray) => {
   try {
     const shopBarbers = await Models.Barber.create(barberArray);
-    console.log(typeof shopBarbers);
     return shopBarbers.map(a => a._id);
   } catch (error) {
     throw new Error(error);
