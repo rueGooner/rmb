@@ -75,6 +75,7 @@ const fetchShops = async (request, response) => {
     const { page, limit, search } = request.query;
     let query = {};
 
+
     if (search) {
       const reg = new RegExp('.*' + search + '.*', 'i');
       query = { name: reg };
@@ -85,12 +86,10 @@ const fetchShops = async (request, response) => {
     const shopCount = await Models.Shop.find(query).countDocuments();
     const shops = await Models.Shop.find(query)
       .skip(parseInt(skip, 10))
-      .limit(parseInt(15, 10));
-
-      console.log(shopCount);
+      .limit(parseInt(12, 10));
 
     response.status(200).send({
-      pages: Math.round(shopCount / 15) > 1 ? Math.round(shopCount / 15) : 1,
+      pages: Math.round(shopCount / 12) > 1 ? Math.round(shopCount / 12) : 1,
       shops,
     });
   } catch (error) {

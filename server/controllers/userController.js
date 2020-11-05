@@ -69,7 +69,9 @@ const login = async ({ body: { email, password } }, response) => {
       user,
     })
   } catch (error) {
-    response.send(error.message);
+    response.json({
+      message: error.message
+    });
   }
 }
 
