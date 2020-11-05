@@ -1,4 +1,3 @@
-const PORT = process.env.PORT || 4000;
 const mongoose = require("mongoose");
 const app = require('./app');
 
@@ -14,6 +13,6 @@ mongoose
     console.log({ database_error: err });
   });
 
-app.listen(PORT, () => {
-  console.log(`App is running on ${PORT}`);
+app.listen(8888, () => {
+  console.log(`App is running on ${8888}`);
 });
